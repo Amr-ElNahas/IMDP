@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Movie = require('../../models/movie')
 const validator = require('../../validations/movieValidations')
+var axios = require('axios');
 
 router.get('/', async (req, res) => {
   Movie.find().then((movies) => {
@@ -73,6 +74,22 @@ router.delete('/:id', async (req, res) => {
       res.status(404).send({ error: 'error' })
   }
 })
+
+
+router.get('/searchB/:title', async (req, res) => {
+    const movieTitle = req.params.title
+    axiosTest(movieTitle).then(data => {
+        res.json({ message: 'Request received!', data })
+    })
+})
+
+function axiosTest(movieTitle) {
+    key = process.env.APIkey
+    return axios.get('http://www.omdbapi.com/?apikey=' + key + '&t=' + movieTitle).then(response => {
+        return response.data.Ratings[0].Value
+    })
+}
+
 
 
 module.exports = router
