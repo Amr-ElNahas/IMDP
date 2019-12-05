@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>IMDP</title>
+</head>
+
+<body>
+  <h1>IMDP</h1>
+  <form method="post" action="">
+    <label for="movieName">Movie Name</label>
+    <input type="text" name="movieName">
+	<label for="personalRating">Personal rating</label>
+	<input type="number" name="personalRating">
+    <input type="submit" value="Add">
+  </form>
+  <form method="get" action="/api/movie/searchB/">
+  <input type="text" name="title">
+  <button type="submit">Search</button>
+</form>
+  <h3>Movies:</h3>
+  <ul>
+    <% movies.forEach(function(movie) { %>
+      <li>
+		<h4>id:</h4><%= movie._id %> 
+        <h4>name:</h4><%= movie.movieName %>
+		<h4>rating:</h4><%= movie.personalRating %>
+      </li>
+      <% }); %>
+  </ul>
+</body>
+
+</html>
