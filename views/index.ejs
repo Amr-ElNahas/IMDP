@@ -28,6 +28,9 @@
 		<h4>id:</h4><%= movie._id %> 
         <h4>name:</h4><%= movie.movieName %>
 		<h4>rating:</h4><%= movie.personalRating %>
+		<form method="post" action=movie/delete/<%= movie._id %>>
+  <button type="submit">Delete</button>
+</form>
       </li>
       <% }); %>
   </ul>

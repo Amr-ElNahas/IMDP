@@ -14,7 +14,6 @@ const querystring = require('querystring');
   })
 })*/
 router.get('/', async (req, res) => {
-    console.log(req.query)
     Movie.find().then((movies) => {
         res.render('index', { movies })
     }, (err) => {
@@ -82,6 +81,15 @@ router.put('/:id', async (req, res) => {
 }
 })
 
+
+router.post('/delete/:id', async (req, res) => {
+    try {
+        const movieId = req.params.id
+        await Movie.findByIdAndRemove(movieId).then(res.redirect('/api/movie'))
+    } catch (error) {
+        res.status(404).json({ error: 'error' })
+    }
+})
 
 router.delete('/:id', async (req, res) => {
   try {
