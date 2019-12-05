@@ -13,6 +13,7 @@ const movies = require('./routes/api/movie')
 /** * global constants ***/
 const app = express()
 const db = process.env.mongoURI
+app.set('view engine', 'ejs');
 
 
 mongoose.connect(db, {useNewUrlParser: true})
@@ -40,7 +41,7 @@ app.use('/api/movie', movies)
 
 
 /** * Adding temporary index page ***/
-app.get('/', (req, res) => { res.send('<h1>IMDP</h1>\n<h3>Index Page<h3>') })
+app.get('/', (req, res) => { res.send('<h1>IMDP</h1>\n<h3>Index Page<h3>\n<a href=/api/movie>movies</a>') })
 /** * Custom routing for wrong requests ***/
 app.use((req, res) => {
   res.status(404).send({ error: 'this page does not exist' })
