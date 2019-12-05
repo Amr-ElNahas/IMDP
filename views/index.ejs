@@ -25,9 +25,23 @@
   <ul>
     <% movies.forEach(function(movie) { %>
       <li>
-		<h4>id:</h4><%= movie._id %> 
+		<!-- <h4>id:</h4><%= movie._id %> -->
+		<div>
         <h4>name:</h4><%= movie.movieName %>
 		<h4>rating:</h4><%= movie.personalRating %>
+		</div>
+		<div>
+		<form method="post" action=movie/delete/<%= movie._id %>>
+		<button type="submit">Delete</button>
+		</form>
+		</div>
+		<div>
+		<form method="post" action=movie/update/<%= movie._id %>>
+		<label for="personalRating">Personal rating</label>
+		<input type="number" name="personalRating">
+		<button type="submit">Update</button>
+		</form>
+		</div>
       </li>
       <% }); %>
   </ul>

@@ -3,8 +3,6 @@ const router = express.Router()
 const Movie = require('../../models/movie')
 const validator = require('../../validations/movieValidations')
 var axios = require('axios');
-const url = require('url');
-const querystring = require('querystring');
 
 /*router.get('/', async (req, res) => {
   Movie.find().then((movies) => {
@@ -14,7 +12,6 @@ const querystring = require('querystring');
   })
 })*/
 router.get('/', async (req, res) => {
-    console.log(req.query)
     Movie.find().then((movies) => {
         res.render('index', { movies })
     }, (err) => {
@@ -62,26 +59,52 @@ router.post('/', async (req, res) => {
 
 })
 
-router.put('/:id', async (req, res) => {
-  try {
-    const movieId = req.params.id
-    const movieInstance = await Movie.findById(movieId)
-    if (!movieInstance) {
-        res.status(404).json({ error: 'not found' })
+//router.put('/:id', async (req, res) => {
+//  try {
+//    const movieId = req.params.id
+//    const movieInstance = await Movie.findById(movieId)
+//    if (!movieInstance) {
+//        res.status(404).json({ error: 'not found' })
+//    }
+//    const isValidated = validator.updateValidation(req.body)
+//      if (isValidated.error) {
+//          res.status(400).json({ error: isValidated.error.details[0].message })
+//      } else {
+//          await Movie.findByIdAndUpdate(movieId, req.body)
+//          res.redirect('/api/movie')
+//          //res.json({ message: 'updated successfuly' })
+//      }
+//} catch (error) {
+//    res.status(400).send({ error: 'error' })
+//}
+//})
+router.post('/update/:id', async (req, res) => {
+    try {
+        const movieId = req.params.id
+        const movieInstance = await Movie.findById(movieId)
+        if (!movieInstance) {
+            res.status(404).json({ error: 'not found' })
+        }
+        const isValidated = validator.updateValidation(req.body)
+        if (isValidated.error) {
+            res.status(400).json({ error: isValidated.error.details[0].message })
+        } else {
+            await Movie.findByIdAndUpdate(movieId, req.body).then(res.redirect('/api/movie'))
+            //res.json({ message: 'updated successfuly' })
+        }
+    } catch (error) {
+        res.status(400).send({ error: 'error' })
     }
-    const isValidated = validator.updateValidation(req.body)
-      if (isValidated.error) {
-          res.status(400).json({ error: isValidated.error.details[0].message })
-      } else {
-          await Movie.findByIdAndUpdate(movieId, req.body)
-          res.redirect('/api/movie')
-          //res.json({ message: 'updated successfuly' })
-      }
-} catch (error) {
-    res.status(400).send({ error: 'error' })
-}
 })
 
+router.post('/delete/:id', async (req, res) => {
+    try {
+        const movieId = req.params.id
+        await Movie.findByIdAndRemove(movieId).then(res.redirect('/api/movie'))
+    } catch (error) {
+        res.status(404).json({ error: 'error' })
+    }
+})
 
 router.delete('/:id', async (req, res) => {
   try {
